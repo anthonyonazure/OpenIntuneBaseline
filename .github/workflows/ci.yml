@@ -1,0 +1,26 @@
+name: Policy JSON Validation
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  validate-policy-json:
+    runs-on: ubuntu-latest
+    name: Validate Intune policy JSON exports
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install test dependencies
+        run: pip install -r tests/requirements.txt
+
+      - name: Run policy JSON validation suite
+        run: pytest tests/ -v
