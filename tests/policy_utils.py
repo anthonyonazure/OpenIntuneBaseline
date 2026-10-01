@@ -25,6 +25,11 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 # files live directly under BYOD/AppProtection.
 PLATFORM_DIRS = ["WINDOWS", "MACOS", "WINDOWS365", "BYOD"]
 
+# JSON files that live in a platform directory but are not policy exports.
+# PolicyManifest.json (added upstream in v4.0) is the OIBID tracking index and
+# is validated by Scripts/Update-OIBManifest.ps1, not by this suite.
+NON_POLICY_FILENAMES = {"PolicyManifest.json"}
+
 # BOM signatures, longest first so UTF-8's 3-byte BOM is checked before any
 # accidental 2-byte prefix match.
 _UTF8_BOM = b"\xef\xbb\xbf"
@@ -46,7 +51,7 @@ def discover_policy_files(root: Path = REPO_ROOT) -> list[Path]:
         platform_dir = root / platform
         if not platform_dir.is_dir():
             continue
-        files.extend(sorted(platform_dir.rglob("*.json")))
+        files.extend(p for p in platform_dir.rglob("*.json") if p.name not in NON_POLICY_FILENAMES)
     return sorted(files)
 
 

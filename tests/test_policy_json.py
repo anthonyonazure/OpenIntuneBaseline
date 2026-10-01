@@ -27,6 +27,7 @@ import pytest
 from policy_utils import (
     NAMING_PATTERNS,
     category_of,
+    NON_POLICY_FILENAMES,
     discover_policy_files,
     load_policy_json,
     platform_of,
@@ -66,7 +67,7 @@ def test_discovery_covers_all_platform_json(request):
     root = Path(__file__).resolve().parent.parent
     expected = set()
     for platform in ("WINDOWS", "MACOS", "WINDOWS365", "BYOD"):
-        expected.update((root / platform).rglob("*.json"))
+        expected.update(p for p in (root / platform).rglob("*.json") if p.name not in NON_POLICY_FILENAMES)
     assert set(ALL_FILES) == expected
 
 
