@@ -24,3 +24,16 @@ jobs:
 
       - name: Run policy JSON validation suite
         run: pytest tests/ -v
+
+  audit-tool:
+    runs-on: ubuntu-latest
+    name: Test the audit tool (Invoke-OIBAudit.ps1)
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Pester tests
+        shell: pwsh
+        run: |
+          $result = Invoke-Pester -Path tests/Invoke-OIBAudit.Tests.ps1 -PassThru -Output Detailed
+          if ($result.FailedCount -gt 0) { exit 1 }
