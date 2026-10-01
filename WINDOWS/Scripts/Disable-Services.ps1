@@ -39,7 +39,8 @@ $LevelTwo = $false    # Toggle Level 2 enforcement
 
 # List of services to exclude from modification (case-sensitive)
 $ExcludeList = @(
-    'ExampleService'   # Skip disabling ExampleService
+    'ExampleService',  # Skip disabling ExampleService
+    'WpnService'       # Windows Push Notifications. Intune remote actions and Autopatch depend on it (see upstream PR #108)
 )
 
 $ErrorCount = 0        # Initialise ErrorCount

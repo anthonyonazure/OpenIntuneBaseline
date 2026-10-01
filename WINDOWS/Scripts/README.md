@@ -46,6 +46,8 @@ It supports full customization to meet your environment’s specific requirement
 - `$LevelOne` / `$LevelTwo` – Enable or disable enforcement of CIS Level 1 and Level 2 services.
 - `$ExcludeList` – A customizable list of services you wish to exclude from enforcement (e.g., Spooler, WinRM).
 
+`WpnService` (Windows Push Notifications) is excluded by default in this fork. Intune remote actions and Autopatch depend on it, so do not remove that exclusion unless you accept that loss. The upstream author did not merge this script (PR #108) because most of these services already have a policy-based mitigation in the baseline. Treat it as optional.
+
 ### Usage
 **Script type** - Platform Script
 **Assign to** - Devices
