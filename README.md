@@ -116,21 +116,3 @@ Across the OIB, the following naming convention is used, seen below with some ex
 | MacOS | - | OIB | - | Microsoft Edge | - | D | - | Security | - | v1.0 |
 
 Further information on the naming convention can be found in the [FAQ](/FAQ.md#why-do-policies-have-d-and-u-in-their-name).
-
----
-
-## Testing / Policy JSON Validation
-This repo has no application code, so "testing" here means automated data validation of the policy JSON exports under `WINDOWS/`, `MACOS/`, `WINDOWS365/` and `BYOD/`. A [pytest](https://docs.pytest.org/) suite lives in [`tests/`](/tests) and runs automatically on every push/PR via [`.github/workflows/ci.yml`](/.github/workflows/ci.yml).
-
-It validates every policy JSON file it finds (not just `*/IntuneManagement/**` — `NativeImport/` and `BYOD/AppProtection/` are policy files too) for:
-- **Valid JSON**, decoding each file with its *actual* encoding rather than assuming one. The IntuneManagement export tool writes UTF-16LE-with-BOM; `NativeImport/` exports are UTF-8-with-BOM; `BYOD/AppProtection/*` is plain UTF-8. A naive UTF-8-only parser (e.g. bare `jq` or Python's `json.load()` without encoding detection) will misreport the majority of files in this repo as corrupt.
-- **Filename naming convention**, checked per-platform against the real patterns in use (see above) — `Win - OIB - ... - vX.Y[.Z].json`, `Win365 - OIB - ...`, `MacOS - OIB - ...`, and the version-less `iOS/Android - Baseline - BYOD - ...` used by BYOD.
-- **No duplicate policy `name`/`id` within a category** (a file's immediate parent folder). This is deliberately *not* checked across `IntuneManagement/<Category>/` vs `NativeImport/` — MacOS and Windows 365 legitimately export the same policy into both trees in two different shapes, so identical name/id pairs there are expected, not a bug.
-- **Structural invariants** seen in the real data: every file has a non-empty `@odata.context`, a non-empty `id`, and a non-empty name (`displayName` or `name`, depending on policy type); a body `version` field, when present, is a sane non-negative int or non-empty string (compliance policies use an int revision counter, BYOD app protection policies use an ETag-like string — the two are unrelated to the `vX.Y` in the filename, which is a curation label, not a Graph-assigned value).
-
-### Running locally
-```bash
-pip install -r tests/requirements.txt
-pytest tests/ -v
-```
-No network access or Graph/Intune credentials are required — everything is static analysis of the checked-in JSON.
