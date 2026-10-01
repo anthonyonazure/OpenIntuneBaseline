@@ -24,7 +24,7 @@ function Parse-SimpleChoiceValue {
         [string]$SettingNameForWarning = "Setting"
     )
     if ([string]::IsNullOrEmpty($ValueString)) {
-        Write-Warning "$SettingNameForWarning: ValueString is null or empty."
+        Write-Warning "${SettingNameForWarning}:ValueString is null or empty."
         return $null 
     }
     $parts = $ValueString.Split('_')
@@ -41,7 +41,7 @@ function Parse-SimpleChoiceValue {
             if ($lastPart -match "^\d+$") {
                 return [int]$lastPart
             }
-            Write-Warning "$SettingNameForWarning: Unknown choice value suffix '$lastPart' in '$ValueString'. Returning null."
+            Write-Warning "${SettingNameForWarning}:Unknown choice value suffix '$lastPart' in '$ValueString'. Returning null."
             return $null
         }
     }

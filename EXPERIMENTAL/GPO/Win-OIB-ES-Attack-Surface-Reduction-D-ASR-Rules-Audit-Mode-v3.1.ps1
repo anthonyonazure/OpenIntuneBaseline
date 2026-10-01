@@ -36,7 +36,7 @@ function Get-DefenderRuleStateValue {
         [string]$SettingNameForWarning = "Setting"
     )
     if ([string]::IsNullOrEmpty($StateString)) {
-        Write-Warning "$SettingNameForWarning: StateString is null or empty."
+        Write-Warning "${SettingNameForWarning}:StateString is null or empty."
         return $null 
     }
     # Examples: 
@@ -57,7 +57,7 @@ function Get-DefenderRuleStateValue {
         "warn"      { return 6 } # Warn
         "6"         { return 6 }
         default { 
-            Write-Warning "$SettingNameForWarning: Unknown state suffix '$statePart' in '$StateString'. Defaulting to 0 (Off/Disabled)."
+            Write-Warning "${SettingNameForWarning}:Unknown state suffix '$statePart' in '$StateString'. Defaulting to 0 (Off/Disabled)."
             return 0 
         }
     }
