@@ -1,5 +1,8 @@
 # OpenIntuneBaseline
 
+> [!NOTE]
+> This is a fork. It adds community contributions that are not in the upstream project. See [FORK.md](FORK.md) for what is different.
+
 <p align="center">
   <a href="https://x.com/SkipToEndpoint">
     <img alt="X (formerly Twitter) Follow" src="https://img.shields.io/twitter/follow/SkipToEndpoint?style=social&label=Follow%20on%20X" target="_blank" />
